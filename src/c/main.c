@@ -117,15 +117,17 @@ static void canvas_update_proc(Layer *layer, GContext *ctx) {
   }
 
   // --- Lightning bolt icon ---
-  graphics_context_set_fill_color(ctx, GColorCyan);
-  GPoint bolt_points[] = {
-    {103, 202}, {99, 209}, {102, 209},
-    {98, 216}, {105, 207}, {102, 207}, {103, 202}
-  };
-  GPathInfo bolt_info = { .num_points = 7, .points = bolt_points };
-  GPath *bolt_path = gpath_create(&bolt_info);
-  gpath_draw_filled(ctx, bolt_path);
-  gpath_destroy(bolt_path);
+  if (s_bt_connected) {
+    graphics_context_set_fill_color(ctx, GColorCyan);
+    GPoint bolt_points[] = {
+      {103, 202}, {99, 209}, {102, 209},
+      {98, 216}, {105, 207}, {102, 207}, {103, 202}
+    };
+    GPathInfo bolt_info = { .num_points = 7, .points = bolt_points };
+    GPath *bolt_path = gpath_create(&bolt_info);
+    gpath_draw_filled(ctx, bolt_path);
+    gpath_destroy(bolt_path);
+  }
 }
 
 static TextLayer *create_text_layer(Layer *parent, GRect frame, GFont font,
