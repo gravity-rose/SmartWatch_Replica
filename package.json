@@ -7,7 +7,7 @@
   "dependencies": {},
   "pebble": {
     "displayName": "SmartWatch Replica",
-    "uuid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "uuid": "9ac0e3c0-fd2c-42cd-99cd-465b269a8940",
     "sdkVersion": "3",
     "enableMultiJS": true,
     "targetPlatforms": ["emery"],
