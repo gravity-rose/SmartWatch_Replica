@@ -59,6 +59,42 @@
           "type": "png",
           "name": "IMAGE_CALORIES",
           "file": "images/icon_calories.png"
+        },
+        {
+          "type": "font",
+          "name": "FONT_HANKEN_BOLD_58",
+          "file": "fonts/HankenGrotesk-Bold.ttf",
+          "characterRegex": "[0-9:]"
+        },
+        {
+          "type": "font",
+          "name": "FONT_HANKEN_MEDIUM_22",
+          "file": "fonts/HankenGrotesk-Medium.ttf",
+          "characterRegex": "[0-9°C%\\- ]"
+        },
+        {
+          "type": "font",
+          "name": "FONT_HANKEN_MEDIUM_16",
+          "file": "fonts/HankenGrotesk-Medium.ttf",
+          "characterRegex": "[A-Z0-9°C%\\-: ]"
+        },
+        {
+          "type": "font",
+          "name": "FONT_HANKEN_MEDIUM_14",
+          "file": "fonts/HankenGrotesk-Medium.ttf",
+          "characterRegex": "[A-Z ]"
+        },
+        {
+          "type": "font",
+          "name": "FONT_HANKEN_MEDIUM_12",
+          "file": "fonts/HankenGrotesk-Medium.ttf",
+          "characterRegex": "[AMP ]"
+        },
+        {
+          "type": "font",
+          "name": "FONT_FIRA_EXTRACOND_16",
+          "file": "fonts/FiraSansExtraCondensed-ExtraBold.ttf",
+          "characterRegex": "[A-Z /]"
         }
       ]
     }

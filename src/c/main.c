@@ -68,6 +68,7 @@ static GFont s_font_time;
 static GFont s_font_large;
 static GFont s_font_medium;
 static GFont s_font_small;
+static GFont s_font_title;
 
 // ============================================================
 // Canvas: squircle bezel, dividers, BT icon, bolt icon, date box
@@ -93,14 +94,16 @@ static void canvas_update_proc(Layer *layer, GContext *ctx) {
 
   // --- Vertical divider between left/right columns (upper section) ---
   graphics_context_set_stroke_color(ctx, GColorCyan);
-  graphics_draw_line(ctx, GPoint(cx, 32), GPoint(cx, 86));
+  graphics_context_set_stroke_width(ctx, 2);
+  graphics_draw_line(ctx, GPoint(cx, 38), GPoint(cx, 82));
 
   // --- Date number box (filled cyan, text drawn black on top) ---
   graphics_context_set_fill_color(ctx, GColorCyan);
   graphics_fill_rect(ctx, GRect(59, 56, 32, 28), 0, GCornerNone);
 
   // --- Vertical divider between STEPS and KCAL ---
-  graphics_draw_line(ctx, GPoint(cx, 143), GPoint(cx, 193));
+  graphics_draw_line(ctx, GPoint(cx, 149), GPoint(cx, 189));
+  graphics_context_set_stroke_width(ctx, 1);
 
   // --- Bluetooth icon: two interlocking chain links ---
   if (s_bt_connected) {
@@ -261,12 +264,12 @@ static void window_load(Window *window) {
   GRect bounds = layer_get_bounds(root);
   window_set_background_color(window, GColorBlack);
 
-  // --- Fonts ---
-  // Time stays Bitham 42 Bold; everything else reduced
-  s_font_time = fonts_get_system_font(FONT_KEY_BITHAM_42_BOLD);
-  s_font_large = fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD);
-  s_font_medium = fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD);
-  s_font_small = fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD);
+  // --- Custom fonts (Montserrat + Oswald from Google Fonts) ---
+  s_font_time = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_HANKEN_BOLD_58));
+  s_font_large = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_HANKEN_MEDIUM_22));
+  s_font_medium = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_HANKEN_MEDIUM_16));
+  s_font_small = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_HANKEN_MEDIUM_14));
+  s_font_title = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_FIRA_EXTRACOND_16));
 
   // --- Bitmaps ---
   s_weather_sunny_bmp = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_WEATHER_SUNNY);
@@ -283,9 +286,9 @@ static void window_load(Window *window) {
   layer_set_update_proc(s_canvas_layer, canvas_update_proc);
   layer_add_child(root, s_canvas_layer);
 
-  // --- Title: "SMART WATCH" (Gothic 18 Bold, cyan) ---
+  // --- Title: "SMART WATCH" (Oswald Bold 16, cyan) ---
   s_title_layer = create_text_layer(root, GRect(0, 12, SCREEN_W, 22),
-                                     s_font_medium, GColorCyan, GTextAlignmentCenter);
+                                     s_font_title, GColorCyan, GTextAlignmentCenter);
   text_layer_set_text(s_title_layer, "SMART WATCH");
 
   // --- Weather icon (above date box, centered over it) ---
@@ -309,7 +312,7 @@ static void window_load(Window *window) {
                                      s_font_medium, GColorLightGray, GTextAlignmentRight);
 
   // --- Date number (black text on cyan filled box) ---
-  s_date_num_layer = create_text_layer(root, GRect(59, 54, 32, 28),
+  s_date_num_layer = create_text_layer(root, GRect(59, 56, 32, 28),
                                         s_font_large, GColorBlack, GTextAlignmentCenter);
 
   // --- Heart icon (right column, 30x30) ---
@@ -326,24 +329,25 @@ static void window_load(Window *window) {
   // --- BPM value (WHITE, Gothic 18 Bold) ---
   s_bpm_value_layer = create_text_layer(root, GRect(108, 72, 80, 20),
                                          s_font_medium, GColorWhite, GTextAlignmentCenter);
-  snprintf(s_bpm_buf, sizeof(s_bpm_buf), "120");
+  snprintf(s_bpm_buf, sizeof(s_bpm_buf), "--");
   text_layer_set_text(s_bpm_value_layer, s_bpm_buf);
 
   // --- Hours (large, WHITE, Bitham 42 - centered on 3-9 axis) ---
-  s_hours_layer = create_text_layer(root, GRect(5, 86, 88, 48),
+  s_hours_layer = create_text_layer(root, GRect(0, 78, 86, 64),
                                      s_font_time, GColorWhite, GTextAlignmentRight);
 
-  // --- AM/PM (cyan, Gothic 14 Bold) ---
-  s_ampm_layer = create_text_layer(root, GRect(94, 88, 25, 16),
-                                    s_font_small, GColorCyan, GTextAlignmentLeft);
+  // --- AM/PM (cyan, 12pt) ---
+  GFont font_ampm = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_HANKEN_MEDIUM_12));
+  s_ampm_layer = create_text_layer(root, GRect(93, 92, 25, 14),
+                                    font_ampm, GColorWhite, GTextAlignmentLeft);
 
-  // --- Colon (cyan, Bitham 42) ---
-  s_colon_layer = create_text_layer(root, GRect(90, 86, 22, 48),
+  // --- Colon (cyan) ---
+  s_colon_layer = create_text_layer(root, GRect(88, 78, 24, 64),
                                      s_font_time, GColorCyan, GTextAlignmentCenter);
   text_layer_set_text(s_colon_layer, ":");
 
-  // --- Minutes (large, CYAN, Bitham 42) ---
-  s_minutes_layer = create_text_layer(root, GRect(108, 86, 88, 48),
+  // --- Minutes (large, CYAN) ---
+  s_minutes_layer = create_text_layer(root, GRect(112, 78, 88, 64),
                                        s_font_time, GColorCyan, GTextAlignmentLeft);
 
   // --- Steps icon (moved up) ---
@@ -436,6 +440,11 @@ static void window_unload(Window *window) {
   gbitmap_destroy(s_steps_bmp);
   gbitmap_destroy(s_calories_bmp);
   layer_destroy(s_canvas_layer);
+  fonts_unload_custom_font(s_font_time);
+  fonts_unload_custom_font(s_font_large);
+  fonts_unload_custom_font(s_font_medium);
+  fonts_unload_custom_font(s_font_small);
+  fonts_unload_custom_font(s_font_title);
 }
 
 static void init(void) {
