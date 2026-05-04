@@ -1,0 +1,66 @@
+{
+  "name": "smartwatch-replica",
+  "author": "Marc",
+  "version": "1.0.0",
+  "keywords": ["pebble-app"],
+  "private": true,
+  "dependencies": {},
+  "pebble": {
+    "displayName": "SmartWatch Replica",
+    "uuid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "sdkVersion": "3",
+    "enableMultiJS": true,
+    "targetPlatforms": ["emery"],
+    "watchapp": {
+      "watchface": true
+    },
+    "messageKeys": {
+      "KEY_TEMPERATURE": 0,
+      "KEY_CONDITIONS": 1
+    },
+    "resources": {
+      "media": [
+        {
+          "type": "png",
+          "name": "IMAGE_WEATHER_SUNNY",
+          "file": "images/weather_sunny.png"
+        },
+        {
+          "type": "png",
+          "name": "IMAGE_WEATHER_CLOUDY",
+          "file": "images/weather_cloudy.png"
+        },
+        {
+          "type": "png",
+          "name": "IMAGE_WEATHER_RAINY",
+          "file": "images/weather_rainy.png"
+        },
+        {
+          "type": "png",
+          "name": "IMAGE_WEATHER_SNOWY",
+          "file": "images/weather_snowy.png"
+        },
+        {
+          "type": "png",
+          "name": "IMAGE_WEATHER_THUNDER",
+          "file": "images/weather_thunder.png"
+        },
+        {
+          "type": "png",
+          "name": "IMAGE_HEART",
+          "file": "images/icon_heart.png"
+        },
+        {
+          "type": "png",
+          "name": "IMAGE_STEPS",
+          "file": "images/icon_steps.png"
+        },
+        {
+          "type": "png",
+          "name": "IMAGE_CALORIES",
+          "file": "images/icon_calories.png"
+        }
+      ]
+    }
+  }
+}
