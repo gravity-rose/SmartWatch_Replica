@@ -214,6 +214,16 @@ static void bt_handler(bool connected) {
   layer_mark_dirty(s_canvas_layer);
 }
 
+static void update_heart_rate() {
+  HealthValue hr = health_service_peek_current_value(HealthMetricHeartRateBPM);
+  if (hr > 0) {
+    snprintf(s_bpm_buf, sizeof(s_bpm_buf), "%d", (int)hr);
+  } else {
+    snprintf(s_bpm_buf, sizeof(s_bpm_buf), "--");
+  }
+  text_layer_set_text(s_bpm_value_layer, s_bpm_buf);
+}
+
 static void health_handler(HealthEventType event, void *context) {
   if (event == HealthEventMovementUpdate || event == HealthEventSignificantUpdate) {
     HealthValue steps = health_service_sum_today(HealthMetricStepCount);
@@ -222,15 +232,10 @@ static void health_handler(HealthEventType event, void *context) {
     HealthValue kcal = health_service_sum_today(HealthMetricActiveKCalories);
     snprintf(s_kcal_buf, sizeof(s_kcal_buf), "%d", (int)kcal);
     text_layer_set_text(s_kcal_value_layer, s_kcal_buf);
+    update_heart_rate();
   }
   if (event == HealthEventHeartRateUpdate) {
-    HealthValue hr = health_service_peek_current_value(HealthMetricHeartRateBPM);
-    if (hr > 0) {
-      snprintf(s_bpm_buf, sizeof(s_bpm_buf), "%d", (int)hr);
-    } else {
-      snprintf(s_bpm_buf, sizeof(s_bpm_buf), "--");
-    }
-    text_layer_set_text(s_bpm_value_layer, s_bpm_buf);
+    update_heart_rate();
   }
 }
 
@@ -408,6 +413,7 @@ static void window_load(Window *window) {
     snprintf(s_kcal_buf, sizeof(s_kcal_buf), "%d", (int)kcal);
     text_layer_set_text(s_kcal_value_layer, s_kcal_buf);
   }
+  update_heart_rate();
 }
 
 static void window_unload(Window *window) {
